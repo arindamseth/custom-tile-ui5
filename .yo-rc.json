@@ -1,0 +1,11 @@
+{
+  "generator-easy-ui5": {
+    "projectname": "customtile",
+    "namespace": "com.hcl",
+    "platform": "Static webserver",
+    "viewtype": "XML",
+    "viewname": "MainView",
+    "ui5libs": "Content delivery network (SAPUI5)",
+    "newdir": true
+  }
+}
