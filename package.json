@@ -5,37 +5,52 @@
     "node": "12.X"
   },
   "scripts": {
-    "start": "ui5 serve -o index.html",
-    "serve": "ui5 serve",
-    "test": "run-s lint karma",
-    "karma-ci": "karma start karma-ci.conf.js",
-    "clearCoverage": "shx rm -rf coverage",
-    "karma": "run-s clearCoverage karma-ci",
-    "lint": "eslint .",
-    "build:ui": "ui5 build --clean-dest --dest approuter/webapp "
+    "prepare": "mkdirp dist",
+    "build": "npx ui5 build --clean-dest --include-task=generateManifestBundle generateCachebusterInfo",
+    "dev": "cross-env NODE_EXTRA_CA_CERTS=$npm_package_sslcert npx ui5 serve --port 1081 --open index.html",
+    "debug": "node --inspect node_modules/.bin/ui5 serve --port 1081",
+    "watch:build": "npm-watch build",
+    "watch": "npm-run-all prepare --parallel watch:build start",
+    "transpile": "npx gulp transpile",
+    "watch:transpile": "npx gulp watch",
+    "serve": "npm-run-all --parallel watch:transpile dev",
+    "clean": "npx gulp clean"
   },
-  "dependencies": {
-    "@openui5/sap.m": "^1.75.0",
-    "@openui5/themelib_sap_belize": "^1.75.0",
-    "@openui5/themelib_sap_fiori_3": "^1.75.0",
-    "shx": "^0.3.2"
+  "watch": {
+    "build": {
+      "patterns": [
+        "tmp"
+      ],
+      "extensions": "html,js,json,xml,properties",
+      "quiet": false
+    }
   },
   "devDependencies": {
-    "@ui5/cli": "^1.14.0",
-    "ui5-middleware-livereload": "^0.1.7",
-    "karma": "^4.4.1",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-coverage": "^2.0.1",
-    "karma-ui5": "^1.1.0",
-    "npm-run-all": "^4.1.5",
-    "eslint": "^6.8.0"
+    "@babel/core": "*",
+    "@babel/plugin-transform-runtime": "*",
+    "@babel/preset-env": "*",
+    "@ui5/cli": "*",
+    "cross-env": "*",
+    "del": "*",
+    "eslint": "*",
+    "fancy-log": "*",
+    "gulp": "*",
+    "gulp-babel": "*",
+    "gulp-changed": "*",
+    "gulp-if": "*",
+    "gulp-line-ending-corrector": "*",
+    "mkdirp": "*",
+    "npm-run-all": "*",
+    "npm-watch": "*",
+    "ui5-middleware-livereload": "*",
+    "ui5-middleware-servestatic": "*",
+    "ui5-middleware-simpleproxy": "*"
   },
   "ui5": {
     "dependencies": [
-      "@openui5/sap.m",
-      "@openui5/themelib_sap_belize",
-      "@openui5/themelib_sap_fiori_3",
-      "ui5-middleware-livereload"
+      "ui5-middleware-livereload",
+      "ui5-middleware-simpleproxy",
+      "ui5-middleware-servestatic"
     ]
   }
 }

@@ -1,18 +1,44 @@
-specVersion: "1.0"
+---
+# builder:
+#   customTasks:
+#     -
+#       afterTask: replaceVersion
+#       configuration:
+#         debug: true
+#         excludePatterns:
+#           - lib/
+#           - another/dir/in/webapp
+#           - yet/another/dir
+#       name: ui5-task-transpile
 metadata:
   name: customtile
-type: application
+resources:
+  configuration:
+    paths:
+      webapp: tmp
 server:
   customMiddleware:
-    - name: ui5-middleware-livereload
-      afterMiddleware: compression
-      configuration:
-        port: 35729
-        path: webapp
-    - name: ui5-middleware-cfdestination
-      afterMiddleware: compression
+    - afterMiddleware: compression
       configuration:
         debug: true
-        port: 1091
-        xsappJson: approuter/xs-app.json
-        destinations: []
+        ext: "xml,json,properties"
+        path: tmp
+        port: 35729
+      name: ui5-middleware-livereload
+    - afterMiddleware: compression
+      configuration:
+        baseUri: "https://asiasap02.compass-group.com:446/sap/"
+      mountPath: /sap/
+      name: ui5-middleware-simpleproxy
+    - afterMiddleware: compression
+      configuration:
+        baseUri: "https://latest-openui5.rikosjett.com"
+      mountPath: /proxy2
+      name: ui5-middleware-simpleproxy
+    - afterMiddleware: compression
+      configuration:
+        rootPath: ./download/sapui5-rt-1.75.0/resources
+      mountPath: /resources
+      name: ui5-middleware-servestatic
+specVersion: "1.0"
+type: application

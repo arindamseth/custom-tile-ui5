@@ -1,48 +1,72 @@
 {
-	"env": {
-		"browser": true
-	},
-	"parserOptions": {
-		"ecmaVersion": 2019
-	},
-	"globals": {
-		"sap": true,
-		"jQuery": true
-	},
-	"rules": {
-		"block-scoped-var": 1,
-		"keyword-spacing": 2,
-		"space-unary-ops": 2,
-		"camelcase": 1,
-		"consistent-return": 1,
-		"no-warning-comments": 1,
-		"default-case": 1,
-		"no-console": 2,
-		"no-unused-vars": 2,
-		"no-trailing-spaces": 2,
-		"no-debugger": 2,
-		"semi": [
-			1,
-			"always"
-		],
-		"quotes": [
-			1,
-			"double"
-		],
-		"key-spacing": [
-			1,
-			{
-				"beforeColon": false
-			}
-		],
-		"comma-spacing": [
-			1,
-			{
-				"before": false,
-				"after": true
-			}
-		],
-		"no-shadow": 2,
-		"no-irregular-whitespace": 2
-	}
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2019
+  },
+  "globals": {
+    "sap": true,
+    "jQuery": true
+  },
+  "rules": {
+    "block-scoped-var": 1,
+    "keyword-spacing": 2,
+    "space-unary-ops": 2,
+    "camelcase": 1,
+    "consistent-return": 1,
+    "no-warning-comments": 1,
+    "default-case": 1,
+    "no-trailing-spaces": 2,
+    "no-debugger": 2,
+    "quotes": [1, "double"],
+    "key-spacing": [
+      1,
+      {
+        "beforeColon": false
+      }
+    ],
+    "comma-spacing": [
+      1,
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "no-irregular-whitespace": 2,
+    "eqeqeq": "error",
+    "curly": "warn",
+    "no-eval": "error",
+    "no-console": "error",
+    "no-dupe-else-if": "error",
+    "no-implicit-globals": "error",
+    "no-shadow": "warn",
+    "no-undef": "error",
+    "comma-dangle": ["warn", "never"],
+    "no-lonely-if": "warn",
+    "semi": ["error", "always"],
+    "space-before-blocks": "warn",
+    "space-before-function-paren": [
+      "warn",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "spaced-comment": ["warn", "always"],
+    "no-extra-bind": "warn",
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "none"
+      }
+    ],
+    "valid-jsdoc": [
+      "warn",
+      {
+        "requireReturn": false
+      }
+    ]
+  }
 }

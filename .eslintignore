@@ -1,3 +1,5 @@
 templates/
 deployer/resources/
 node_modules/
+download/
+gulpfile.js
