@@ -1,18 +1,18 @@
 "use strict";
 
-sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "sap/m/Text", "sap/ui/thirdparty/jquery"], function (Control, CustomTileRenderer, library, Text, jQuery) {
+sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "sap/m/Text", "sap/ui/thirdparty/jquery", "sap/ui/core/HTML", "sap/ui/events/PseudoEvents", "sap/ui/core/Icon"], function (Control, CustomTileRenderer, library, Text, jQuery, HTML, PseudoEvents, Icon) {
   var FrameType = library.FrameType,
       LoadState = library.LoadState,
       TileSizeBehavior = library.TileSizeBehavior,
       WrappingType = library.WrappingType;
   /**
-   * Constructor for a new sap.m.GenericTile control.
+   * Constructor for a new sap.m.CustomTile control.
    *
    * @param {string} [sId] ID for the new control, generated automatically if no ID is given
    * @param {object} [mSettings] initial settings for the new control
    *
    * @class Displays header, two subheaders, total experience, relevant experience, current project and assignation
-   * Inspired from sap.m.GenericTile
+   * Inspired from sap.m.CustomTile
    *
    * @extends sap.ui.core.Control
    *
@@ -163,16 +163,6 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
         },
 
         /**
-         * Renders the given link as root element and therefore enables the open in new tab / window functionality
-         * @since 1.76
-         */
-        url: {
-          type: "sap.ui.core.URI",
-          group: "Misc",
-          defaultValue: null
-        },
-
-        /**
          * Defines the type of text wrapping to be used (hyphenated or normal).
          * @since 1.60
          */
@@ -189,6 +179,11 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
         width: {
           type: "sap.ui.core.CSSSize",
           group: "Appearance"
+        },
+        url: {
+          type: "string",
+          group: "Appearance",
+          defaultValue: null
         }
       },
       aggregations: {
@@ -307,14 +302,6 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
         press: {
           parameters: {
             /**
-             * The current scope the GenericTile was in when the event occurred.
-             * @since 1.46.0
-             */
-            scope: {
-              type: "sap.m.GenericTileScope"
-            },
-
-            /**
              * The action that was pressed on the tile. In the Actions scope, the available actions are Press and Remove.
              * In Display scope, the parameter value is only Press.
              * @since 1.46.0
@@ -324,7 +311,7 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
             },
 
             /**
-             * The pressed DOM Element pointing to the GenericTile's DOM Element in Display scope.
+             * The pressed DOM Element pointing to the CustomTile's DOM Element in Display scope.
              * In Actions scope it points to the more icon, when the tile is pressed, or to the DOM Element of the remove button, when the remove button is pressed.
              * @since 1.46.0
              */
@@ -336,9 +323,68 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
       }
     }
   });
+  /* --- Event Handling --- */
+
+  CustomTile.prototype.ontouchstart = function () {
+    this.addStyleClass("sapMGTPressActive");
+
+    if (this.$("hover-overlay").length > 0) {
+      this.$("hover-overlay").addClass("sapMGTPressActive");
+    }
+  };
+
+  CustomTile.prototype.ontouchcancel = function () {
+    this.removeStyleClass("sapMGTPressActive");
+
+    if (this.$("hover-overlay").length > 0) {
+      this.$("hover-overlay").removeClass("sapMGTPressActive");
+    }
+  };
+
+  CustomTile.prototype.ontouchend = function () {
+    this.removeStyleClass("sapMGTPressActive");
+
+    if (this.$("hover-overlay").length > 0) {
+      this.$("hover-overlay").removeClass("sapMGTPressActive");
+    }
+  };
+
+  CustomTile.prototype.ontap = function (event) {
+    var oParams;
+
+    if (this._bTilePress && this.getState() !== library.LoadState.Disabled) {
+      this.$().focus();
+      oParams = this._getEventParams(event);
+      this.firePress(oParams);
+      event.preventDefault();
+    }
+  };
+
+  CustomTile.prototype.onkeydown = function (event) {
+    if (PseudoEvents.events.sapselect.fnCheck(event) && this.getState() !== library.LoadState.Disabled) {
+      this.addStyleClass("sapMGTPressActive");
+
+      if (this.$("hover-overlay").length > 0) {
+        this.$("hover-overlay").addClass("sapMGTPressActive");
+      }
+
+      event.preventDefault();
+    }
+  };
 
   CustomTile.prototype.init = function () {
-    // Title
+    this._oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
+    this._sFailedToLoad = this._oRb.getText("INFOTILE_CANNOT_LOAD_TILE");
+    this._sLoading = this._oRb.getText("INFOTILE_LOADING");
+    this._oFailedText = new Text(this.getId() + "-failed-txt", {
+      maxLines: 2
+    });
+    this._oFailedText.cacheLineHeight = false;
+
+    this._oFailedText.addStyleClass("sapMGTFailed");
+
+    this.setAggregation("_failedMessageText", this._oFailedText, true); // Title
+
     this._oTitle = new Text(this.getId() + "-title");
 
     this._oTitle.addStyleClass("customTileHeader");
@@ -463,12 +509,41 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     this.setAggregation("_assignationDate", this._oAssignationDate, true);
 
     this._oAssignationDate.setProperty("maxLines", 1);
+
+    this._oWarningIcon = new Icon(this.getId() + "-warn-icon", {
+      src: "sap-icon://notification",
+      size: "1.375rem"
+    });
+
+    this._oWarningIcon.addStyleClass("sapMGTFtrFldIcnMrk");
+
+    this._oBusy = new HTML(this.getId() + "-overlay");
+
+    this._oBusy.setBusyIndicatorDelay(0);
+
+    this._bTilePress = true;
+    this._bThemeApplied = true;
+
+    if (!sap.ui.getCore().isInitialized()) {
+      this._bThemeApplied = false;
+      sap.ui.getCore().attachInit(this._handleCoreInitialized.bind(this));
+    } else {
+      this._handleCoreInitialized();
+    }
   };
 
-  CustomTile.prototype.exit = function () {};
+  CustomTile.prototype.exit = function () {
+    this._oWarningIcon.destroy();
+
+    this._oBusy.destroy();
+  };
 
   CustomTile.prototype.renderer = function (oRm, oControl) {
     CustomTileRenderer.render(oRm, oControl);
+  };
+
+  CustomTile._Action = {
+    Press: "Press"
   };
 
   CustomTile.prototype.onAfterRendering = function () {
@@ -482,11 +557,17 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     this.$().bind("mouseleave", this._removeTooltipFromControl.bind(this));
   };
 
+  CustomTile.prototype.onBeforeRendering = function () {
+    this.$().unbind("mouseenter");
+    this.$().unbind("mouseleave");
+  };
+
   CustomTile.prototype.setWrappingType = function (sWrappingType) {
     this.setProperty("wrappingType", sWrappingType, true);
 
-    this._oTitle.setWrappingType(sWrappingType); // this._oFailedText.setWrappingType(sWrappingType);
+    this._oTitle.setWrappingType(sWrappingType);
 
+    this._oFailedText.setWrappingType(sWrappingType);
 
     this._oSubHeader.setWrappingType(sWrappingType);
 
@@ -506,7 +587,58 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
 
     this._oAssignation.setWrappingType(sWrappingType);
 
+    this._oAssignationDate.setWrappingType(sWrappingType);
+
     return this;
+  };
+  /**
+   * Handler for the core's init event. In order for the tile to adjust its rendering to the current theme,
+   * we attach a theme check in here when everything is properly initialized and loaded.
+   *
+   * @private
+   */
+
+
+  CustomTile.prototype._handleCoreInitialized = function () {
+    this._bThemeApplied = sap.ui.getCore().isThemeApplied();
+
+    if (!this._bThemeApplied) {
+      sap.ui.getCore().attachThemeChanged(this._handleThemeApplied, this);
+    }
+  };
+  /**
+   * The tile recalculates its title's max-height when line-height could be loaded from CSS.
+   *
+   * @private
+   */
+
+
+  CustomTile.prototype._handleThemeApplied = function () {
+    this._bThemeApplied = true;
+
+    this._oTitle.clampHeight();
+
+    this._oSubHeader.clampHeight();
+
+    this._oBand.clampHeight();
+
+    this._oJoined.clampHeight();
+
+    this._oTexLabel.clampHeight();
+
+    this._oTexVal.clampHeight();
+
+    this._oYrsLabel.clampHeight();
+
+    this._oRexLabel.clampHeight();
+
+    this._oRexVal.clampHeight();
+
+    this._oAssignation.clampHeight();
+
+    this._oAssignationDate.clampHeight();
+
+    sap.ui.getCore().detachThemeChanged(this._handleThemeApplied, this);
   };
 
   CustomTile.prototype.getHeader = function () {
@@ -681,7 +813,7 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     }
   };
   /**
-   * Gets the header, subheader and image description text of GenericTile
+   * Gets the header, subheader and image description text of CustomTile
    *
    * @private
    * @returns {String} The text
@@ -703,6 +835,22 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     }
 
     return sText;
+  };
+  /**
+   * Generates text for failed state.
+   * To avoid multiple calls e.g. in every _getAriaAndTooltipText call, this is done in onBeforeRendering.
+   *
+   * @private
+   */
+
+
+  CustomTile.prototype._generateFailedText = function () {
+    var sCustomFailedMsg = this.getFailedText();
+    var sFailedMsg = sCustomFailedMsg ? sCustomFailedMsg : this._sFailedToLoad;
+
+    this._oFailedText.setProperty("text", sFailedMsg, true);
+
+    this._oFailedText.setAggregation("tooltip", sFailedMsg, true);
   };
 
   CustomTile.prototype._setTooltipFromControl = function () {
@@ -821,7 +969,7 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
   };
   /**
    * When mouse leaves CustomTile, removes the CustomTile's own tooltip (truncated header text or MicroChart tooltip), do not remove the tooltip set by user.
-   * The reason is tooltip from control should not be displayed any more when the header text becomes short or MicroChart is not in GenericTile.
+   * The reason is tooltip from control should not be displayed any more when the header text becomes short or MicroChart is not in CustomTile.
    *
    * @private
    */
@@ -843,6 +991,24 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
 
   CustomTile.prototype._isCompact = function () {
     return jQuery("body").hasClass("sapUiSizeCompact") || this.$().is(".sapUiSizeCompact") || this.$().closest(".sapUiSizeCompact").length > 0;
+  };
+  /**
+   * Determines the current action depending on the tile's scope.
+   * @param {sap.ui.base.Event} oEvent which was fired
+   * @returns {object} An object containing the tile's scope and the action which triggered the event
+   * @private
+   */
+
+
+  CustomTile.prototype._getEventParams = function (oEvent) {
+    var oParams,
+        sAction = CustomTile._Action.Press,
+        oDomRef = this.getDomRef();
+    oParams = {
+      action: sAction,
+      domRef: oDomRef
+    };
+    return oParams;
   };
 
   return CustomTile;

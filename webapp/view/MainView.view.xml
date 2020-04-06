@@ -17,7 +17,8 @@
             rexLabel="REX" 
             rexValue="03" 
             assignation="Transports for London" 
-            assignationDate="Assigned Till: 31-DEC-2017"/>
+            assignationDate="Assigned Till: 31-DEC-2017" 
+            press="onPress"/>
           <ct:CustomTile header="Another Long Name which May span multiple lines" 
             subheader="SAP Enterprise Portal or a bigger text which may not fit" 
             band="Band: E1.1" 

@@ -3,8 +3,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
   encodeCSS
 ) {
   "use strict";
-  let LoadState = library.LoadState;
-  const GenericTileMode = library.GenericTileMode;
+  const LoadState = library.LoadState;
 
   const CTRenderer = {};
 
@@ -18,6 +17,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
   CTRenderer.render = function(oRm, oControl) {
     const sTooltipText = oControl._getTooltipText();
     const bHasPress = oControl.hasListeners("press");
+    const sState = oControl.getState();
     oRm.write("<div");
     oRm.writeControlData(oControl);
 
@@ -44,6 +44,15 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
 
     // Tile content
     this._renderTileContent(oRm, oControl);
+
+    if (sState !== LoadState.Loaded) {
+      this._renderStateOverlay(oRm, oControl, sTooltipText);
+    }
+
+    if (sState !== LoadState.Disabled) {
+      this._renderHoverOverlay(oRm, oControl);
+      this._renderFocusDiv(oRm, oControl);
+    }
 
     oRm.write("</div>"); // Tile div end
   };
@@ -265,6 +274,60 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
     // REX start
     this._renderREX(oRm, oControl);
 
+    oRm.write("</div>");
+  };
+
+  CTRenderer._renderHoverOverlay = function(oRm, oControl) {
+    oRm.write("<div");
+    oRm.writeAttribute("id", oControl.getId() + "-hover-overlay");
+    oRm.addClass("sapMGTWithoutImageHoverOverlay");
+    oRm.writeClasses();
+    oRm.write(">");
+    oRm.write("</div>");
+  };
+
+  CTRenderer._renderFocusDiv = function(oRm, oControl) {
+    oRm.write("<div");
+    oRm.addClass("sapMGTFocusDiv");
+    oRm.writeClasses();
+    oRm.writeAttribute("id", oControl.getId() + "-focus");
+    oRm.write(">");
+    oRm.write("</div>");
+  };
+
+  CTRenderer._renderStateOverlay = function(oRm, oControl, sTooltipText) {
+    var sState = oControl.getState();
+    oRm.write("<div");
+    oRm.addClass("sapMGTOverlay");
+    oRm.writeClasses();
+    oRm.writeAttribute("id", oControl.getId() + "-overlay");
+    if (sTooltipText) {
+      oRm.writeAttributeEscaped("title", sTooltipText);
+    }
+    oRm.write(">");
+    switch (sState) {
+      case LoadState.Loading:
+        oControl._oBusy.setBusy(sState === LoadState.Loading);
+        oRm.renderControl(oControl._oBusy);
+        break;
+      case LoadState.Failed:
+        oRm.write("<div");
+        oRm.writeAttribute("id", oControl.getId() + "-failed-ftr");
+        oRm.addClass("sapMGenericTileFtrFld");
+        oRm.writeClasses();
+        oRm.write(">");
+        oRm.write("<div");
+        oRm.writeAttribute("id", oControl.getId() + "-failed-icon");
+        oRm.addClass("sapMGenericTileFtrFldIcn");
+        oRm.writeClasses();
+        oRm.write(">");
+        oRm.renderControl(oControl._oWarningIcon);
+        oRm.write("</div>");
+
+        oRm.write("</div>");
+        break;
+      default:
+    }
     oRm.write("</div>");
   };
 
