@@ -16,11 +16,16 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    */
 
   CTRenderer.render = function(oRm, oControl) {
-    const sTooltipText = "Test Tooltip";
+    const sTooltipText = oControl._getTooltipText();
+    const bHasPress = oControl.hasListeners("press");
     oRm.write("<div");
     oRm.writeControlData(oControl);
 
-    oRm.writeAttribute("role", "button");
+    if (bHasPress) {
+      oRm.writeAttribute("role", "button");
+    } else {
+      oRm.writeAttribute("role", "presentation");
+    }
 
     if (sTooltipText) {
       oRm.writeAttributeEscaped("title", sTooltipText);

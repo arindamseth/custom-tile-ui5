@@ -472,10 +472,14 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
   };
 
   CustomTile.prototype.onAfterRendering = function () {
-    // if I need to do any post render actions, it will happen here
     if (sap.ui.core.Control.prototype.onAfterRendering) {
       sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); // run the super class's method first
-    }
+    } // attaches handler this._updateAriaAndTitle to the event mouseenter and removes attributes ARIA-label and title of all content elements
+
+
+    this.$().bind("mouseenter", this._updateAriaAndTitle.bind(this)); // attaches handler this._removeTooltipFromControl to the event mouseleave and removes control's own tooltips (Truncated header text and MicroChart tooltip).
+
+    this.$().bind("mouseleave", this._removeTooltipFromControl.bind(this));
   };
 
   CustomTile.prototype.setWrappingType = function (sWrappingType) {
@@ -637,9 +641,77 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     return this;
   };
 
+  CustomTile.prototype._updateAriaAndTitle = function () {
+    var sAriaAndTitleText = this._getAriaAndTooltipText();
+
+    var $Tile = this.$();
+    $Tile.attr("aria-label", sAriaAndTitleText);
+
+    this._setTooltipFromControl();
+  };
+  /**
+   * Returns a text for the ARIA label as combination of header and content texts
+   * when the tooltip is empty
+   * @private
+   * @returns {String} The ARIA label text
+   */
+
+
+  CustomTile.prototype._getAriaAndTooltipText = function () {
+    var sAriaText = this.getTooltip_AsString() && !this._isTooltipSuppressed() ? this.getTooltip_AsString() : this._getHeaderAriaAndTooltipText();
+
+    switch (this.getState()) {
+      case library.LoadState.Disabled:
+        return "";
+
+      case library.LoadState.Loading:
+        return sAriaText + "\n" + this._sLoading;
+
+      case library.LoadState.Failed:
+        return sAriaText + "\n" + this._oFailedText.getText();
+
+      default:
+        if (sAriaText.trim().length === 0) {
+          // If the string is empty or just whitespace, IE renders an empty tooltip (e.g. "" + "\n" + "")
+          return "";
+        } else {
+          return sAriaText;
+        }
+
+    }
+  };
+  /**
+   * Gets the header, subheader and image description text of GenericTile
+   *
+   * @private
+   * @returns {String} The text
+   */
+
+
+  CustomTile.prototype._getHeaderAriaAndTooltipText = function () {
+    var sText = "";
+    var bIsFirst = true;
+
+    if (this.getHeader()) {
+      sText += this.getHeader();
+      bIsFirst = false;
+    }
+
+    if (this.getSubheader()) {
+      sText += (bIsFirst ? "" : "\n") + this.getSubheader();
+      bIsFirst = false;
+    }
+
+    return sText;
+  };
+
   CustomTile.prototype._setTooltipFromControl = function () {
     var sTooltip = "";
-    var bIsFirst = true;
+    var bIsFirst = true,
+        bTexLabel = false,
+        bTexValue = false,
+        bRexLabel = false,
+        bRexValue = false;
 
     if (this._oTitle.getText()) {
       sTooltip = this._oTitle.getText();
@@ -648,6 +720,60 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
 
     if (this.getSubheader()) {
       sTooltip += (bIsFirst ? "" : "\n") + this.getSubheader();
+      bIsFirst = false;
+    }
+
+    if (this.getBand()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getBand();
+      bIsFirst = false;
+    }
+
+    if (this.getJoined()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getJoined();
+      bIsFirst = false;
+    }
+
+    if (this.getTexLabel()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getTexLabel();
+      bIsFirst = false;
+      bTexLabel = true;
+    }
+
+    if (this.getTexValue()) {
+      sTooltip += (bTexLabel ? ":" : "\n") + this.getTexValue();
+      bIsFirst = false;
+      bTexValue = true;
+    }
+
+    if (this.getYearsLabel() && bTexValue) {
+      sTooltip += " " + this.getYearsLabel();
+      bIsFirst = false;
+    }
+
+    if (this.getRexLabel()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getRexLabel();
+      bIsFirst = false;
+      bRexLabel = true;
+    }
+
+    if (this.getRexValue()) {
+      sTooltip += (bRexLabel ? ":" : "\n") + this.getRexValue();
+      bIsFirst = false;
+      bRexValue = true;
+    }
+
+    if (this.getYearsLabel() && bRexValue) {
+      sTooltip += " " + this.getYearsLabel();
+      bIsFirst = false;
+    }
+
+    if (this.getAssignation()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getAssignation();
+      bIsFirst = false;
+    }
+
+    if (this.getAssignationDate()) {
+      sTooltip += (bIsFirst ? "" : "\n") + this.getAssignationDate();
       bIsFirst = false;
     } // when user does not set tooltip, apply the tooltip below
 
@@ -673,6 +799,50 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
     } else {
       return false;
     }
+  };
+  /**
+   * Returns text for tooltip or null.
+   * If the application provides a specific tooltip, the returned string is equal to the tooltip text.
+   * If the tooltip provided by the application is a string of only white spaces, the function returns null.
+   *
+   * @returns {String} Text for tooltip or null.
+   * @private
+   */
+
+
+  CustomTile.prototype._getTooltipText = function () {
+    var sTooltip = this.getTooltip_Text(); // checks (typeof sTooltip === "string" || sTooltip instanceof String || sTooltip instanceof sap.ui.core.TooltipBase), returns text, null or undefined
+
+    if (this._isTooltipSuppressed() === true) {
+      sTooltip = null; // tooltip suppressed by the app
+    }
+
+    return sTooltip; // tooltip set by the app
+  };
+  /**
+   * When mouse leaves CustomTile, removes the CustomTile's own tooltip (truncated header text or MicroChart tooltip), do not remove the tooltip set by user.
+   * The reason is tooltip from control should not be displayed any more when the header text becomes short or MicroChart is not in GenericTile.
+   *
+   * @private
+   */
+
+
+  CustomTile.prototype._removeTooltipFromControl = function () {
+    if (this._bTooltipFromControl) {
+      this.$().removeAttr("title");
+      this._bTooltipFromControl = false;
+    }
+  };
+  /**
+   * Looks for the class '.sapUiSizeCompact' on the control and its parents to determine whether to render cozy or compact density mode.
+   *
+   * @returns {boolean} True if class 'sapUiSizeCompact' was found, otherwise false.
+   * @private
+   */
+
+
+  CustomTile.prototype._isCompact = function () {
+    return jQuery("body").hasClass("sapUiSizeCompact") || this.$().is(".sapUiSizeCompact") || this.$().closest(".sapUiSizeCompact").length > 0;
   };
 
   return CustomTile;
