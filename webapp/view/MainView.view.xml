@@ -1,4 +1,5 @@
-<mvc:View controllerName="com.hcl.customtile.controller.MainView" displayBlock="true" 
+<mvc:View controllerName="com.hcl.customtile.controller.MainView" 
+  displayBlock="true" 
   xmlns="sap.m" 
   xmlns:mvc="sap.ui.core.mvc" 
   xmlns:ct="com.hcl.customtile.control">
@@ -6,10 +7,50 @@
     <pages>
       <Page title="{i18n>title}">
         <content>
-          <ct:CustomTile header="Moumita Adhikari Moumita Adhikari Moumita Adhikari Moumita Adhikari"/>
-          <ct:CustomTile/>
-          <ct:CustomTile/>
-          <ct:CustomTile/>
+          <ct:CustomTile header="Moumita Adhikari " 
+            subheader="SAP Enterprise Portal" 
+            band="Band: E1.1" 
+            joined="01-Jan-2017" 
+            texLabel="TEX" 
+            texValue="05" 
+            yearsLabel="Years" 
+            rexLabel="REX" 
+            rexValue="03" 
+            assignation="Transports for London" 
+            assignationDate="Assigned Till: 31-DEC-2017"/>
+          <ct:CustomTile header="Another Long Name which May span multiple lines" 
+            subheader="SAP Enterprise Portal or a bigger text which may not fit" 
+            band="Band: E1.1" 
+            joined="01/10/2015" 
+            texLabel="TEX" 
+            texValue="4.5" 
+            yearsLabel="YRS" 
+            rexLabel="REX" 
+            rexValue="02" 
+            assignation="Transports for Brazil" 
+            assignationDate="Assigned Till: 31/12/2017"/>
+          <ct:CustomTile header="Short Name" 
+            subheader="SAP Enterprise Portal" 
+            band="Band: E2.1" 
+            joined="Mar 10, 2016" 
+            texLabel="TEX" 
+            texValue="3.5" 
+            yearsLabel="MONTHS" 
+            rexLabel="REX" 
+            rexValue="03" 
+            assignation="A really long project name which might not fit in the tile space" 
+            assignationDate="Assigned Till: Dec 31, 2019"/>
+          <ct:CustomTile header="Generic Name" 
+            subheader="SAP PI" 
+            band="Band: E1.2" 
+            joined="01-Mar-2017" 
+            texLabel="TEX" 
+            texValue="02" 
+            yearsLabel="YRS" 
+            rexLabel="REX" 
+            rexValue="02" 
+            assignation="Test project name" 
+            assignationDate="Assigned Till: 31-Dec-2020"/>
         </content>
       </Page>
     </pages>

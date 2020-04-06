@@ -64,22 +64,39 @@ sap.ui.define(
           /**
            * The TEX label of the tile.
            */
-          texLabel: { type: "string", group: "Appearance", defaultValue: null },
+          texLabel: {
+            type: "string",
+            group: "Appearance",
+            defaultValue: "TEX"
+          },
 
           /**
            * The TEX value of the tile.
            */
-          texVal: { type: "string", group: "Appearance", defaultValue: null },
+          texValue: { type: "string", group: "Appearance", defaultValue: null },
+
+          /**
+           * The YRS label of the tile.
+           */
+          yearsLabel: {
+            type: "string",
+            group: "Appearance",
+            defaultValue: "YRS"
+          },
 
           /**
            * The REX label of the tile.
            */
-          rexLabel: { type: "string", group: "Appearance", defaultValue: null },
+          rexLabel: {
+            type: "string",
+            group: "Appearance",
+            defaultValue: "REX"
+          },
 
           /**
-           * The TEX label of the tile.
+           * The REX value of the tile.
            */
-          rexVal: { type: "string", group: "Appearance", defaultValue: null },
+          rexValue: { type: "string", group: "Appearance", defaultValue: null },
 
           /**
            * The assignation value of the tile.
@@ -153,6 +170,87 @@ sap.ui.define(
             visibility: "hidden"
           },
           /**
+           * The hidden aggregation for the sub title.
+           */
+          _subHeader: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the band.
+           */
+          _band: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the joined text.
+           */
+          _joined: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the TEX label.
+           */
+          _texLabel: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the TEX value.
+           */
+          _texValue: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the years label.
+           */
+          _yearsLabel: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+
+          /**
+           * The hidden aggregation for the REX label.
+           */
+          _rexLabel: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the REX value.
+           */
+          _rexValue: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the assignation value.
+           */
+          _assignation: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
+           * The hidden aggregation for the assignation date.
+           */
+          _assignationDate: {
+            type: "sap.m.Text",
+            multiple: false,
+            visibility: "hidden"
+          },
+          /**
            * The hidden aggregation for the message in the failed state.
            */
           _failedMessageText: {
@@ -193,11 +291,88 @@ sap.ui.define(
     });
 
     CustomTile.prototype.init = function() {
+      // Title
       this._oTitle = new Text(this.getId() + "-title");
       this._oTitle.addStyleClass("customTileHeader");
       this._oTitle.cacheLineHeight = false;
       this.setAggregation("_titleText", this._oTitle, true);
       this._oTitle.setProperty("maxLines", 1, true);
+
+      // Subtitle
+      this._oSubHeader = new Text(this.getId() + "-subTitle");
+      this._oSubHeader.addStyleClass("customTileSubHeader");
+      this._oSubHeader.cacheLineHeight = false;
+      this.setAggregation("_subHeader", this._oSubHeader, true);
+      this._oSubHeader.setProperty("maxLines", 1, true);
+
+      // Band
+      this._oBand = new Text(this.getId() + "-band");
+      this._oBand.addStyleClass("customTileSubSubHeader");
+      this._oBand.addStyleClass("sapUiTinyMarginTop");
+      this._oBand.cacheLineHeight = false;
+      this.setAggregation("_band", this._oBand, true);
+      this._oBand.setProperty("maxLines", 1, true);
+
+      // Joined
+      this._oJoined = new Text(this.getId() + "-joined");
+      this._oJoined.addStyleClass("customTileSubSubHeader");
+      this._oJoined.addStyleClass("sapUiTinyMarginTop");
+      this._oJoined.cacheLineHeight = false;
+      this.setAggregation("_joined", this._oJoined, true);
+      this._oJoined.setProperty("maxLines", 1, true);
+
+      // TEX
+      this._oTexLabel = new Text(this.getId() + "-tex-label");
+      this._oTexLabel.addStyleClass("customTileTexRexHeader");
+      this._oTexLabel.addStyleClass("sapUiTinyMarginTop");
+      this._oTexLabel.cacheLineHeight = false;
+      this.setAggregation("_texLabel", this._oTexLabel, true);
+      this._oTexLabel.setProperty("maxLines", 1, true);
+
+      this._oTexVal = new Text(this.getId() + "-tex-val");
+      this._oTexVal.addStyleClass("customTileTexRexContent");
+      this._oTexVal.addStyleClass("sapUiTinyMarginTop");
+      this._oTexVal.cacheLineHeight = false;
+      this.setAggregation("_texValue", this._oTexVal, true);
+      this._oTexVal.setProperty("maxLines", 1, true);
+
+      // Years
+      this._oYrsLabel = new Text(this.getId() + "-years-label");
+      this._oYrsLabel.addStyleClass("customTileTexRexHeader");
+      this._oYrsLabel.addStyleClass("sapUiMediumMarginTop");
+      this._oYrsLabel.addStyleClass("sapUiTinyMarginBottom");
+      this._oYrsLabel.cacheLineHeight = false;
+      this.setAggregation("_yearsLabel", this._oYrsLabel, true);
+      this._oYrsLabel.setProperty("maxLines", 1, true);
+
+      // REX
+      this._oRexLabel = new Text(this.getId() + "-rex-label");
+      this._oRexLabel.addStyleClass("customTileTexRexHeader");
+      this._oRexLabel.addStyleClass("sapUiTinyMarginTop");
+      this._oRexLabel.cacheLineHeight = false;
+      this.setAggregation("_rexLabel", this._oRexLabel, true);
+      this._oRexLabel.setProperty("maxLines", 1, true);
+
+      this._oRexVal = new Text(this.getId() + "-rex-val");
+      this._oRexVal.addStyleClass("customTileTexRexContent");
+      this._oRexVal.addStyleClass("sapUiTinyMarginTop");
+      this._oRexVal.cacheLineHeight = false;
+      this.setAggregation("_rexValue", this._oRexVal, true);
+      this._oRexVal.setProperty("maxLines", 1, true);
+
+      this._oAssignation = new Text(this.getId() + "-assignation-value");
+      this._oAssignation.addStyleClass("customTileAssignationContentHeader");
+      this._oAssignation.addStyleClass("sapUiTinyMarginTop");
+      this._oAssignation.cacheLineHeight = false;
+      this.setAggregation("_assignation", this._oAssignation, true);
+      this._oAssignation.setProperty("maxLines", 1);
+
+      this._oAssignationDate = new Text(this.getId() + "-assignation-date");
+      this._oAssignationDate.addStyleClass("customTileAssignationTill");
+      this._oAssignationDate.addStyleClass("sapUiTinyMarginTop");
+      this._oAssignationDate.cacheLineHeight = false;
+      this.setAggregation("_assignationDate", this._oAssignationDate, true);
+      this._oAssignationDate.setProperty("maxLines", 1);
     };
 
     CustomTile.prototype.exit = function() {};
@@ -216,15 +391,17 @@ sap.ui.define(
       this.setProperty("wrappingType", sWrappingType, true);
       this._oTitle.setWrappingType(sWrappingType);
       // this._oFailedText.setWrappingType(sWrappingType);
-      // this._oSubTitle.setWrappingType(sWrappingType);
+      this._oSubHeader.setWrappingType(sWrappingType);
+      this._oBand.setWrappingType(sWrappingType);
+      this._oJoined.setWrappingType(sWrappingType);
+      this._oTexLabel.setWrappingType(sWrappingType);
+      this._oTexVal.setWrappingType(sWrappingType);
+      this._oYrsLabel.setWrappingType(sWrappingType);
+      this._oRexLabel.setWrappingType(sWrappingType);
+      this._oRexVal.setWrappingType(sWrappingType);
+      this._oAssignation.setWrappingType(sWrappingType);
       return this;
     };
-
-    // CustomTile.prototype.setSubheader = function(sSubheader) {
-    //   this.setProperty("subheader", sSubheader);
-    //   this._oSubTitle.setText(sSubheader);
-    //   return this;
-    // };
 
     CustomTile.prototype.getHeader = function() {
       return this._oTitle.getText();
@@ -233,6 +410,99 @@ sap.ui.define(
     CustomTile.prototype.setHeader = function(title) {
       this.setProperty("header", title);
       this._oTitle.setText(title);
+      return this;
+    };
+
+    CustomTile.prototype.getSubheader = function() {
+      return this._oSubHeader.getText();
+    };
+
+    CustomTile.prototype.setSubheader = function(sSubHeader) {
+      this.setProperty("subheader", sSubHeader);
+      this._oSubHeader.setText(sSubHeader);
+      return this;
+    };
+
+    CustomTile.prototype.getBand = function() {
+      return this._oBand.getText();
+    };
+
+    CustomTile.prototype.setBand = function(sText) {
+      this.setProperty("band", sText);
+      this._oBand.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getJoined = function() {
+      return this._oJoined.getText();
+    };
+
+    CustomTile.prototype.setJoined = function(sText) {
+      this.setProperty("joined", sText);
+      this._oJoined.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getTexLabel = function() {
+      return this._oTexLabel.getText();
+    };
+    CustomTile.prototype.setTexLabel = function(sText) {
+      this.setProperty("texLabel", sText);
+      this._oTexLabel.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getTexValue = function() {
+      return this._oTexVal.getText();
+    };
+    CustomTile.prototype.setTexValue = function(sText) {
+      this.setProperty("texValue", sText);
+      this._oTexVal.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getYearsLabel = function() {
+      return this._oYrsLabel.getText();
+    };
+    CustomTile.prototype.setYearsLabel = function(sText) {
+      this.setProperty("yearsLabel", sText);
+      this._oYrsLabel.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getRexLabel = function() {
+      return this._oRexLabel.getText();
+    };
+    CustomTile.prototype.setRexLabel = function(sText) {
+      this.setProperty("rexLabel", sText);
+      this._oRexLabel.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getRexValue = function() {
+      return this._oRexVal.getText();
+    };
+    CustomTile.prototype.setRexValue = function(sText) {
+      this.setProperty("rexValue", sText);
+      this._oRexVal.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getAssignation = function() {
+      return this._oAssignation.getText();
+    };
+    CustomTile.prototype.setAssignation = function(sText) {
+      this.setProperty("assignation", sText);
+      this._oAssignation.setText(sText);
+      return this;
+    };
+
+    CustomTile.prototype.getAssignationDate = function() {
+      return this._oAssignationDate.getText();
+    };
+    CustomTile.prototype.setAssignationDate = function(sText) {
+      this.setProperty("assignationDate", sText);
+      this._oAssignationDate.setText(sText);
       return this;
     };
 
