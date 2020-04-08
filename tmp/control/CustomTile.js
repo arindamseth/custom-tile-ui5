@@ -1,9 +1,7 @@
 "use strict";
 
 sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "sap/m/Text", "sap/ui/thirdparty/jquery", "sap/ui/core/HTML", "sap/ui/events/PseudoEvents", "sap/ui/core/Icon"], function (Control, CustomTileRenderer, library, Text, jQuery, HTML, PseudoEvents, Icon) {
-  var FrameType = library.FrameType,
-      LoadState = library.LoadState,
-      TileSizeBehavior = library.TileSizeBehavior,
+  var LoadState = library.LoadState,
       WrappingType = library.WrappingType;
   /**
    * Constructor for a new sap.m.CustomTile control.
@@ -26,15 +24,6 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
   var CustomTile = Control.extend("com.hcl.customtile.control.CustomTile", {
     metadata: {
       properties: {
-        /**
-         * The frame type: OneByOne or TwoByOne. Set to OneByOne as default if no property is defined or set to Auto by the app.
-         */
-        frameType: {
-          type: "sap.m.FrameType",
-          group: "Misc",
-          defaultValue: FrameType.TwoByOne
-        },
-
         /**
          * The header of the tile.
          */
@@ -150,16 +139,6 @@ sap.ui.define(["sap/ui/core/Control", "./CustomTileRenderer", "sap/m/library", "
           type: "sap.m.LoadState",
           group: "Misc",
           defaultValue: LoadState.Loaded
-        },
-
-        /**
-         *  If set to <code>TileSizeBehavior.Small</code>, the tile size is the same as it would be on a small-screened phone (374px wide and lower),
-         *  regardless of the screen size of the actual device being used.
-         *  If set to <code>TileSizeBehavior.Responsive</code>, the tile size adapts to the size of the screen.
-         */
-        sizeBehavior: {
-          type: "sap.m.TileSizeBehavior",
-          defaultValue: TileSizeBehavior.Responsive
         },
 
         /**

@@ -7,9 +7,9 @@ sap.ui.define(
     "sap/ui/thirdparty/jquery",
     "sap/ui/core/HTML",
     "sap/ui/events/PseudoEvents",
-    "sap/ui/core/Icon"
+    "sap/ui/core/Icon",
   ],
-  function(
+  function (
     Control,
     CustomTileRenderer,
     library,
@@ -19,9 +19,7 @@ sap.ui.define(
     PseudoEvents,
     Icon
   ) {
-    const FrameType = library.FrameType,
-      LoadState = library.LoadState,
-      TileSizeBehavior = library.TileSizeBehavior,
+    const LoadState = library.LoadState,
       WrappingType = library.WrappingType;
 
     /**
@@ -46,14 +44,6 @@ sap.ui.define(
       metadata: {
         properties: {
           /**
-           * The frame type: OneByOne or TwoByOne. Set to OneByOne as default if no property is defined or set to Auto by the app.
-           */
-          frameType: {
-            type: "sap.m.FrameType",
-            group: "Misc",
-            defaultValue: FrameType.TwoByOne
-          },
-          /**
            * The header of the tile.
            */
           header: { type: "string", group: "Appearance", defaultValue: null },
@@ -63,7 +53,7 @@ sap.ui.define(
           subheader: {
             type: "string",
             group: "Appearance",
-            defaultValue: null
+            defaultValue: null,
           },
           /**
            * The band of the tile.
@@ -79,7 +69,7 @@ sap.ui.define(
           texLabel: {
             type: "string",
             group: "Appearance",
-            defaultValue: "TEX"
+            defaultValue: "TEX",
           },
 
           /**
@@ -93,7 +83,7 @@ sap.ui.define(
           yearsLabel: {
             type: "string",
             group: "Appearance",
-            defaultValue: "YRS"
+            defaultValue: "YRS",
           },
 
           /**
@@ -102,7 +92,7 @@ sap.ui.define(
           rexLabel: {
             type: "string",
             group: "Appearance",
-            defaultValue: "REX"
+            defaultValue: "REX",
           },
 
           /**
@@ -116,7 +106,7 @@ sap.ui.define(
           assignation: {
             type: "string",
             group: "Appearance",
-            defaultValue: null
+            defaultValue: null,
           },
 
           /**
@@ -125,7 +115,7 @@ sap.ui.define(
           assignationDate: {
             type: "string",
             group: "Appearance",
-            defaultValue: null
+            defaultValue: null,
           },
           /**
            * The message that appears when the control is in the Failed state.
@@ -133,7 +123,7 @@ sap.ui.define(
           failedText: {
             type: "string",
             group: "Appearance",
-            defaultValue: null
+            defaultValue: null,
           },
           /**
            * The load status.
@@ -141,16 +131,7 @@ sap.ui.define(
           state: {
             type: "sap.m.LoadState",
             group: "Misc",
-            defaultValue: LoadState.Loaded
-          },
-          /**
-           *  If set to <code>TileSizeBehavior.Small</code>, the tile size is the same as it would be on a small-screened phone (374px wide and lower),
-           *  regardless of the screen size of the actual device being used.
-           *  If set to <code>TileSizeBehavior.Responsive</code>, the tile size adapts to the size of the screen.
-           */
-          sizeBehavior: {
-            type: "sap.m.TileSizeBehavior",
-            defaultValue: TileSizeBehavior.Responsive
+            defaultValue: LoadState.Loaded,
           },
           /**
            * Defines the type of text wrapping to be used (hyphenated or normal).
@@ -159,7 +140,7 @@ sap.ui.define(
           wrappingType: {
             type: "sap.m.WrappingType",
             group: "Appearance",
-            defaultValue: WrappingType.Normal
+            defaultValue: WrappingType.Normal,
           },
           /**
            * Width of the control.
@@ -167,7 +148,7 @@ sap.ui.define(
            */
           width: { type: "sap.ui.core.CSSSize", group: "Appearance" },
 
-          url: { type: "string", group: "Appearance", defaultValue: null }
+          url: { type: "string", group: "Appearance", defaultValue: null },
         },
         aggregations: {
           /**
@@ -176,7 +157,7 @@ sap.ui.define(
           _titleText: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the sub title.
@@ -184,7 +165,7 @@ sap.ui.define(
           _subHeader: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the band.
@@ -192,7 +173,7 @@ sap.ui.define(
           _band: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the joined text.
@@ -200,7 +181,7 @@ sap.ui.define(
           _joined: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the TEX label.
@@ -208,7 +189,7 @@ sap.ui.define(
           _texLabel: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the TEX value.
@@ -216,7 +197,7 @@ sap.ui.define(
           _texValue: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the years label.
@@ -224,7 +205,7 @@ sap.ui.define(
           _yearsLabel: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
 
           /**
@@ -233,7 +214,7 @@ sap.ui.define(
           _rexLabel: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the REX value.
@@ -241,7 +222,7 @@ sap.ui.define(
           _rexValue: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the assignation value.
@@ -249,7 +230,7 @@ sap.ui.define(
           _assignation: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the assignation date.
@@ -257,7 +238,7 @@ sap.ui.define(
           _assignationDate: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
+            visibility: "hidden",
           },
           /**
            * The hidden aggregation for the message in the failed state.
@@ -265,8 +246,8 @@ sap.ui.define(
           _failedMessageText: {
             type: "sap.m.Text",
             multiple: false,
-            visibility: "hidden"
-          }
+            visibility: "hidden",
+          },
         },
         events: {
           /**
@@ -286,36 +267,36 @@ sap.ui.define(
                * In Actions scope it points to the more icon, when the tile is pressed, or to the DOM Element of the remove button, when the remove button is pressed.
                * @since 1.46.0
                */
-              domRef: { type: "any" }
-            }
-          }
-        }
-      }
+              domRef: { type: "any" },
+            },
+          },
+        },
+      },
     });
 
     /* --- Event Handling --- */
-    CustomTile.prototype.ontouchstart = function() {
+    CustomTile.prototype.ontouchstart = function () {
       this.addStyleClass("sapMGTPressActive");
       if (this.$("hover-overlay").length > 0) {
         this.$("hover-overlay").addClass("sapMGTPressActive");
       }
     };
 
-    CustomTile.prototype.ontouchcancel = function() {
+    CustomTile.prototype.ontouchcancel = function () {
       this.removeStyleClass("sapMGTPressActive");
       if (this.$("hover-overlay").length > 0) {
         this.$("hover-overlay").removeClass("sapMGTPressActive");
       }
     };
 
-    CustomTile.prototype.ontouchend = function() {
+    CustomTile.prototype.ontouchend = function () {
       this.removeStyleClass("sapMGTPressActive");
       if (this.$("hover-overlay").length > 0) {
         this.$("hover-overlay").removeClass("sapMGTPressActive");
       }
     };
 
-    CustomTile.prototype.ontap = function(event) {
+    CustomTile.prototype.ontap = function (event) {
       var oParams;
       if (this._bTilePress && this.getState() !== library.LoadState.Disabled) {
         this.$().focus();
@@ -325,7 +306,7 @@ sap.ui.define(
       }
     };
 
-    CustomTile.prototype.onkeydown = function(event) {
+    CustomTile.prototype.onkeydown = function (event) {
       if (
         PseudoEvents.events.sapselect.fnCheck(event) &&
         this.getState() !== library.LoadState.Disabled
@@ -338,14 +319,14 @@ sap.ui.define(
       }
     };
 
-    CustomTile.prototype.init = function() {
+    CustomTile.prototype.init = function () {
       this._oRb = sap.ui.getCore().getLibraryResourceBundle("sap.m");
 
       this._sFailedToLoad = this._oRb.getText("INFOTILE_CANNOT_LOAD_TILE");
       this._sLoading = this._oRb.getText("INFOTILE_LOADING");
 
       this._oFailedText = new Text(this.getId() + "-failed-txt", {
-        maxLines: 2
+        maxLines: 2,
       });
 
       this._oFailedText.cacheLineHeight = false;
@@ -437,7 +418,7 @@ sap.ui.define(
 
       this._oWarningIcon = new Icon(this.getId() + "-warn-icon", {
         src: "sap-icon://notification",
-        size: "1.375rem"
+        size: "1.375rem",
       });
 
       this._oWarningIcon.addStyleClass("sapMGTFtrFldIcnMrk");
@@ -456,20 +437,20 @@ sap.ui.define(
       }
     };
 
-    CustomTile.prototype.exit = function() {
+    CustomTile.prototype.exit = function () {
       this._oWarningIcon.destroy();
       this._oBusy.destroy();
     };
 
-    CustomTile.prototype.renderer = function(oRm, oControl) {
+    CustomTile.prototype.renderer = function (oRm, oControl) {
       CustomTileRenderer.render(oRm, oControl);
     };
 
     CustomTile._Action = {
-      Press: "Press"
+      Press: "Press",
     };
 
-    CustomTile.prototype.onAfterRendering = function() {
+    CustomTile.prototype.onAfterRendering = function () {
       if (sap.ui.core.Control.prototype.onAfterRendering) {
         sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); // run the super class's method first
       }
@@ -481,12 +462,12 @@ sap.ui.define(
       this.$().bind("mouseleave", this._removeTooltipFromControl.bind(this));
     };
 
-    CustomTile.prototype.onBeforeRendering = function() {
+    CustomTile.prototype.onBeforeRendering = function () {
       this.$().unbind("mouseenter");
       this.$().unbind("mouseleave");
     };
 
-    CustomTile.prototype.setWrappingType = function(sWrappingType) {
+    CustomTile.prototype.setWrappingType = function (sWrappingType) {
       this.setProperty("wrappingType", sWrappingType, true);
       this._oTitle.setWrappingType(sWrappingType);
       this._oFailedText.setWrappingType(sWrappingType);
@@ -509,7 +490,7 @@ sap.ui.define(
      *
      * @private
      */
-    CustomTile.prototype._handleCoreInitialized = function() {
+    CustomTile.prototype._handleCoreInitialized = function () {
       this._bThemeApplied = sap.ui.getCore().isThemeApplied();
       if (!this._bThemeApplied) {
         sap.ui.getCore().attachThemeChanged(this._handleThemeApplied, this);
@@ -521,7 +502,7 @@ sap.ui.define(
      *
      * @private
      */
-    CustomTile.prototype._handleThemeApplied = function() {
+    CustomTile.prototype._handleThemeApplied = function () {
       this._bThemeApplied = true;
       this._oTitle.clampHeight();
       this._oSubHeader.clampHeight();
@@ -537,117 +518,117 @@ sap.ui.define(
       sap.ui.getCore().detachThemeChanged(this._handleThemeApplied, this);
     };
 
-    CustomTile.prototype.getHeader = function() {
+    CustomTile.prototype.getHeader = function () {
       return this._oTitle.getText();
     };
 
-    CustomTile.prototype.setHeader = function(title) {
+    CustomTile.prototype.setHeader = function (title) {
       this.setProperty("header", title);
       this._oTitle.setText(title);
       return this;
     };
 
-    CustomTile.prototype.getSubheader = function() {
+    CustomTile.prototype.getSubheader = function () {
       return this._oSubHeader.getText();
     };
 
-    CustomTile.prototype.setSubheader = function(sSubHeader) {
+    CustomTile.prototype.setSubheader = function (sSubHeader) {
       this.setProperty("subheader", sSubHeader);
       this._oSubHeader.setText(sSubHeader);
       return this;
     };
 
-    CustomTile.prototype.getBand = function() {
+    CustomTile.prototype.getBand = function () {
       return this._oBand.getText();
     };
 
-    CustomTile.prototype.setBand = function(sText) {
+    CustomTile.prototype.setBand = function (sText) {
       this.setProperty("band", sText);
       this._oBand.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getJoined = function() {
+    CustomTile.prototype.getJoined = function () {
       return this._oJoined.getText();
     };
 
-    CustomTile.prototype.setJoined = function(sText) {
+    CustomTile.prototype.setJoined = function (sText) {
       this.setProperty("joined", sText);
       this._oJoined.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getTexLabel = function() {
+    CustomTile.prototype.getTexLabel = function () {
       return this._oTexLabel.getText();
     };
 
-    CustomTile.prototype.setTexLabel = function(sText) {
+    CustomTile.prototype.setTexLabel = function (sText) {
       this.setProperty("texLabel", sText);
       this._oTexLabel.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getTexValue = function() {
+    CustomTile.prototype.getTexValue = function () {
       return this._oTexVal.getText();
     };
 
-    CustomTile.prototype.setTexValue = function(sText) {
+    CustomTile.prototype.setTexValue = function (sText) {
       this.setProperty("texValue", sText);
       this._oTexVal.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getYearsLabel = function() {
+    CustomTile.prototype.getYearsLabel = function () {
       return this._oYrsLabel.getText();
     };
 
-    CustomTile.prototype.setYearsLabel = function(sText) {
+    CustomTile.prototype.setYearsLabel = function (sText) {
       this.setProperty("yearsLabel", sText);
       this._oYrsLabel.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getRexLabel = function() {
+    CustomTile.prototype.getRexLabel = function () {
       return this._oRexLabel.getText();
     };
 
-    CustomTile.prototype.setRexLabel = function(sText) {
+    CustomTile.prototype.setRexLabel = function (sText) {
       this.setProperty("rexLabel", sText);
       this._oRexLabel.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getRexValue = function() {
+    CustomTile.prototype.getRexValue = function () {
       return this._oRexVal.getText();
     };
 
-    CustomTile.prototype.setRexValue = function(sText) {
+    CustomTile.prototype.setRexValue = function (sText) {
       this.setProperty("rexValue", sText);
       this._oRexVal.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getAssignation = function() {
+    CustomTile.prototype.getAssignation = function () {
       return this._oAssignation.getText();
     };
 
-    CustomTile.prototype.setAssignation = function(sText) {
+    CustomTile.prototype.setAssignation = function (sText) {
       this.setProperty("assignation", sText);
       this._oAssignation.setText(sText);
       return this;
     };
 
-    CustomTile.prototype.getAssignationDate = function() {
+    CustomTile.prototype.getAssignationDate = function () {
       return this._oAssignationDate.getText();
     };
 
-    CustomTile.prototype.setAssignationDate = function(sText) {
+    CustomTile.prototype.setAssignationDate = function (sText) {
       this.setProperty("assignationDate", sText);
       this._oAssignationDate.setText(sText);
       return this;
     };
 
-    CustomTile.prototype._updateAriaAndTitle = function() {
+    CustomTile.prototype._updateAriaAndTitle = function () {
       var sAriaAndTitleText = this._getAriaAndTooltipText();
       var $Tile = this.$();
 
@@ -662,7 +643,7 @@ sap.ui.define(
      * @private
      * @returns {String} The ARIA label text
      */
-    CustomTile.prototype._getAriaAndTooltipText = function() {
+    CustomTile.prototype._getAriaAndTooltipText = function () {
       var sAriaText =
         this.getTooltip_AsString() && !this._isTooltipSuppressed()
           ? this.getTooltip_AsString()
@@ -690,7 +671,7 @@ sap.ui.define(
      * @private
      * @returns {String} The text
      */
-    CustomTile.prototype._getHeaderAriaAndTooltipText = function() {
+    CustomTile.prototype._getHeaderAriaAndTooltipText = function () {
       var sText = "";
       var bIsFirst = true;
       if (this.getHeader()) {
@@ -712,7 +693,7 @@ sap.ui.define(
      *
      * @private
      */
-    CustomTile.prototype._generateFailedText = function() {
+    CustomTile.prototype._generateFailedText = function () {
       var sCustomFailedMsg = this.getFailedText();
       var sFailedMsg = sCustomFailedMsg
         ? sCustomFailedMsg
@@ -721,7 +702,7 @@ sap.ui.define(
       this._oFailedText.setAggregation("tooltip", sFailedMsg, true);
     };
 
-    CustomTile.prototype._setTooltipFromControl = function() {
+    CustomTile.prototype._setTooltipFromControl = function () {
       let sTooltip = "";
       let bIsFirst = true,
         bTexLabel = false,
@@ -806,7 +787,7 @@ sap.ui.define(
      * @private
      * @returns {boolean} true if the application suppressed the tooltip rendering, otherwise false.
      */
-    CustomTile.prototype._isTooltipSuppressed = function() {
+    CustomTile.prototype._isTooltipSuppressed = function () {
       var sTooltip = this.getTooltip_Text();
       if (sTooltip && sTooltip.length > 0 && sTooltip.trim().length === 0) {
         return true;
@@ -823,7 +804,7 @@ sap.ui.define(
      * @returns {String} Text for tooltip or null.
      * @private
      */
-    CustomTile.prototype._getTooltipText = function() {
+    CustomTile.prototype._getTooltipText = function () {
       let sTooltip = this.getTooltip_Text(); // checks (typeof sTooltip === "string" || sTooltip instanceof String || sTooltip instanceof sap.ui.core.TooltipBase), returns text, null or undefined
       if (this._isTooltipSuppressed() === true) {
         sTooltip = null; // tooltip suppressed by the app
@@ -837,7 +818,7 @@ sap.ui.define(
      *
      * @private
      */
-    CustomTile.prototype._removeTooltipFromControl = function() {
+    CustomTile.prototype._removeTooltipFromControl = function () {
       if (this._bTooltipFromControl) {
         this.$().removeAttr("title");
         this._bTooltipFromControl = false;
@@ -850,7 +831,7 @@ sap.ui.define(
      * @returns {boolean} True if class 'sapUiSizeCompact' was found, otherwise false.
      * @private
      */
-    CustomTile.prototype._isCompact = function() {
+    CustomTile.prototype._isCompact = function () {
       return (
         jQuery("body").hasClass("sapUiSizeCompact") ||
         this.$().is(".sapUiSizeCompact") ||
@@ -864,14 +845,14 @@ sap.ui.define(
      * @returns {object} An object containing the tile's scope and the action which triggered the event
      * @private
      */
-    CustomTile.prototype._getEventParams = function(oEvent) {
+    CustomTile.prototype._getEventParams = function (oEvent) {
       var oParams,
         sAction = CustomTile._Action.Press,
         oDomRef = this.getDomRef();
 
       oParams = {
         action: sAction,
-        domRef: oDomRef
+        domRef: oDomRef,
       };
       return oParams;
     };

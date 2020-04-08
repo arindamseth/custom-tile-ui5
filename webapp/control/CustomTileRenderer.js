@@ -1,4 +1,4 @@
-sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
+sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function (
   library,
   encodeCSS
 ) {
@@ -14,7 +14,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {com.hcl.customtile.control.CustomTile} oControl the control to be rendered
    */
 
-  CTRenderer.render = function(oRm, oControl) {
+  CTRenderer.render = function (oRm, oControl) {
     const sTooltipText = oControl._getTooltipText();
     const bHasPress = oControl.hasListeners("press");
     const sState = oControl.getState();
@@ -33,7 +33,9 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
     oRm.addClass(encodeCSS("sapMGT"));
     oRm.addClass(encodeCSS("tileLayout"));
     oRm.addClass(encodeCSS("customOneByOne"));
-    oRm.addClass(encodeCSS("sapMPointer")); // Need to add a disabled state
+    if (sState !== LoadState.Disabled) {
+      oRm.addClass(encodeCSS("sapMPointer"));
+    }
     oRm.addClass(encodeCSS("sapUiTinyMarginBegin"));
     oRm.addClass(encodeCSS("sapUiTinyMarginTop"));
     oRm.writeClasses();
@@ -64,7 +66,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderHeader = function(oRm, oControl) {
+  CTRenderer._renderHeader = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.writeAttribute("id", oControl.getId() + "-hdr-text");
@@ -80,7 +82,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderSubHeader = function(oRm, oControl) {
+  CTRenderer._renderSubHeader = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.writeAttribute("id", oControl.getId() + "-subhdr-text");
@@ -96,7 +98,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderBand = function(oRm, oControl) {
+  CTRenderer._renderBand = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.writeAttribute("id", oControl.getId() + "-band");
@@ -112,7 +114,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderJoined = function(oRm, oControl) {
+  CTRenderer._renderJoined = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.writeAttribute("id", oControl.getId() + "-joined");
@@ -128,7 +130,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderTEX = function(oRm, oControl) {
+  CTRenderer._renderTEX = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileTexRexContainer"));
@@ -147,7 +149,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderYears = function(oRm, oControl) {
+  CTRenderer._renderYears = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileTexRexYearsContainer"));
@@ -165,7 +167,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderREX = function(oRm, oControl) {
+  CTRenderer._renderREX = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileTexRexContainer"));
@@ -184,7 +186,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderAssignation = function(oRm, oControl) {
+  CTRenderer._renderAssignation = function (oRm, oControl) {
     // Header
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileAssignationContainer"));
@@ -203,7 +205,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderTileContent = function(oRm, oControl) {
+  CTRenderer._renderTileContent = function (oRm, oControl) {
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileContent"));
     oRm.writeClasses();
@@ -235,7 +237,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderSubSubHeader = function(oRm, oControl) {
+  CTRenderer._renderSubSubHeader = function (oRm, oControl) {
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileSubSubHeaderContainer"));
     oRm.writeClasses();
@@ -258,7 +260,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
    * @param {sap.ui.core.RenderManager} oRm the RenderManager that can be used for writing to the render output buffer
    * @param {sap.ui.core.Control} oControl an object representation of the control whose title should be rendered
    */
-  CTRenderer._renderExperience = function(oRm, oControl) {
+  CTRenderer._renderExperience = function (oRm, oControl) {
     oRm.write("<div");
     oRm.addClass(encodeCSS("customTileExperienceContainer"));
     oRm.writeClasses();
@@ -277,7 +279,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
     oRm.write("</div>");
   };
 
-  CTRenderer._renderHoverOverlay = function(oRm, oControl) {
+  CTRenderer._renderHoverOverlay = function (oRm, oControl) {
     oRm.write("<div");
     oRm.writeAttribute("id", oControl.getId() + "-hover-overlay");
     oRm.addClass("sapMGTWithoutImageHoverOverlay");
@@ -286,7 +288,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
     oRm.write("</div>");
   };
 
-  CTRenderer._renderFocusDiv = function(oRm, oControl) {
+  CTRenderer._renderFocusDiv = function (oRm, oControl) {
     oRm.write("<div");
     oRm.addClass("sapMGTFocusDiv");
     oRm.writeClasses();
@@ -295,7 +297,7 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function(
     oRm.write("</div>");
   };
 
-  CTRenderer._renderStateOverlay = function(oRm, oControl, sTooltipText) {
+  CTRenderer._renderStateOverlay = function (oRm, oControl, sTooltipText) {
     var sState = oControl.getState();
     oRm.write("<div");
     oRm.addClass("sapMGTOverlay");

@@ -1,24 +1,24 @@
 /* Enter your custom styles here */
 .customTileContent {
-  line-height: 0.2rem;
+  line-height: 0.1rem;
   margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
 }
 
 .customOneByOne {
-  width: 15rem;
-  height: 15rem;
+  width: 13.5rem;
+  height: 13.5rem;
 }
 
 .customTileHeader {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .customTileSubHeader {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .customTileSubSubHeaderContainer {
@@ -60,7 +60,7 @@
 }
 
 .customTileTexRexContent {
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .customTileAssignationContainer {

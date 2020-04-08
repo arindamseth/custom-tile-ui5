@@ -42,18 +42,9 @@
     "no-implicit-globals": "error",
     "no-shadow": "warn",
     "no-undef": "error",
-    "comma-dangle": ["warn", "never"],
     "no-lonely-if": "warn",
     "semi": ["error", "always"],
     "space-before-blocks": "warn",
-    "space-before-function-paren": [
-      "warn",
-      {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
     "spaced-comment": ["warn", "always"],
     "no-extra-bind": "warn",
     "no-unused-vars": [

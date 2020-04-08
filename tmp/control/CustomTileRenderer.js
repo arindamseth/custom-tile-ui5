@@ -33,7 +33,10 @@ sap.ui.define(["sap/m/library", "sap/base/security/encodeCSS"], function (librar
     oRm.addClass(encodeCSS("sapMGT"));
     oRm.addClass(encodeCSS("tileLayout"));
     oRm.addClass(encodeCSS("customOneByOne"));
-    oRm.addClass(encodeCSS("sapMPointer")); // Need to add a disabled state
+
+    if (sState !== LoadState.Disabled) {
+      oRm.addClass(encodeCSS("sapMPointer"));
+    }
 
     oRm.addClass(encodeCSS("sapUiTinyMarginBegin"));
     oRm.addClass(encodeCSS("sapUiTinyMarginTop"));
